@@ -114,11 +114,18 @@ cron.schedule(
   "46 15 * * *",
   async (req, res) => {
     const now = moment().tz(timezone);
+    const currentDate = new Date()
+    const today = currentDate.toJSON().slice(0,8)
+    Date.prototype.subtractDay = function (days) {
+      this.setTime(this.getTime(days * 24 * 60 * 60 *1000))
+      return this
+    }
+    const yesterday = currentDate.subtractDay(1).toJSON().slice(0,8)
     if (now.hour() === 15 && now.minute() === 46) {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "https://api.fda.gov/food/enforcement.json?search=report_date:[20240313+TO+20240326]&limit=1000",
+        url: `https://api.fda.gov/food/enforcement.json?search=report_date:[${yesterday}+TO+${today}]&limit=1000`,
         headers: {},
       };
 
@@ -138,7 +145,5 @@ cron.schedule(
   }
 );
 app.use("/api/usda", require("./routes/usdaRoutes"));
-
-//app.use('/api', require('./controllers/mailTrapController'))
 
 app.listen(port, console.log(`Server running at port: ${port}`));

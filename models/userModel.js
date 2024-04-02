@@ -20,8 +20,8 @@ const userSchema = mongoose.Schema({
         required: [true, 'Please add a password']
     },
     notifications: {
-        type: Array,
-        default: []
+            fda: {type: Boolean},
+            usda: {type: Boolean}
     }
 })
 
