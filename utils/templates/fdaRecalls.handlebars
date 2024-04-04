@@ -1,11 +1,66 @@
 <html>
     <head>
         <style>
+             a {
+                text-decoration: none;
+                color: #000;
+                display: block;
+                }
+            .recall-list {
+                padding: 15px 5px;
+                margin-bottom: 10px;
+                background: #c4dec426;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 12px;
+            }
+            .recall-title {
+                font-weight: 600;
+                text-align: left;
+                font-size: 16px;
+                padding: 5px 0;
+            }
+            .company {
+                padding: 5px 0;
+                font-weight: 400;
+                text-align: left;
+                font-size: 14px;
+            }
 
+            .recall-group {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .recall-details {
+                display: flex;
+                flex-direction: column;
+                align-items: baseline;
+                justify-content: center;
+                padding: 5px 0;
+            }
+            .recall-list span {
+                font-weight: 600;
+            }
         </style>
     </head>
     <body>
-        <p>Hi {{name}},</p>
-        <p>These are the recalls as listed on the fda website today.</p>
+        {{#each data}}
+        <a href=`http://localhost:3000/recalls/fda/{{event_id}}` class="recall-list">
+            <div className='recall-title'>{{reason_for_recall}}</div>
+            <div className='company'><span>Company:</span>&nbsp;{{recalling_firm}}</div>
+            <div className='recall-group'>
+                <div className='risk-level'><span>Risk:</span>&nbsp;{{classification}}</div>
+                <div className='recall-status'><span>Status:</span>&nbsp;{{status}}</div>
+            </div>
+            <div className='recall-details'>
+              <div className='recall-date'>
+                <span>Date:</span>&nbsp;
+                {{report_date}}</div>
+              <div className='recall-states'><span>Distribution Area:</span>&nbsp; {{distribution_pattern}}</div>
+            </div>
+        </a>
+        {{/each}}
     </body>
 </html>

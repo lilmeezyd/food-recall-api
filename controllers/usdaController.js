@@ -13,7 +13,7 @@ const getUsdaRecall = asyncHandler(async(req, res) => {
         headers: { }
     }
 
-    axios.get(config)
+    axios.request(config)
     .then(res => {
         console.log(res)
     }).then(err => console.log(err))

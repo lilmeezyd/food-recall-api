@@ -13,6 +13,7 @@ const timezone = "Africa/Kampala";
 const nodemailer = require("nodemailer");
 const { engine } = require("express-handlebars");
 //const hbs = require('hbs')
+const sendEmail = require('./utils/sendEmail')
 const ejs = require("ejs");
 
 connectDB();
@@ -110,29 +111,38 @@ cron.schedule(
   }
 );*/
 
+// Check for new recalls from the fda website
 cron.schedule(
-  "46 15 * * *",
+  "51 03 * * *",
   async (req, res) => {
     const now = moment().tz(timezone);
     const currentDate = new Date()
-    const today = currentDate.toJSON().slice(0,8)
+    const today = (currentDate.toJSON().slice(0,8)+currentDate.toJSON().slice(8, 10)).split('-').join('')
     Date.prototype.subtractDay = function (days) {
-      this.setTime(this.getTime(days * 24 * 60 * 60 *1000))
+      this.setTime(this.getTime()-(days * 24 * 60 * 60 *1000))
       return this
     }
-    const yesterday = currentDate.subtractDay(1).toJSON().slice(0,8)
-    if (now.hour() === 15 && now.minute() === 46) {
+    const yesterdayDate = currentDate.subtractDay(1)
+    const yesterday = (yesterdayDate.toJSON().slice(0,8)+yesterdayDate.toJSON().slice(8, 10)).split('-').join('')
+    if (now.hour() === 3 && now.minute() === 51) {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: `https://api.fda.gov/food/enforcement.json?search=report_date:[${yesterday}+TO+${today}]&limit=1000`,
+        url: `https://api.fda.gov/food/enforcement.json?search=report_date:[20240326+TO+20240327]&limit=5`,
+        //url: `https://api.fda.gov/food/enforcement.json?search=report_date:[${yesterday}+TO+${today}]&limit=1000`,
         headers: {},
       };
 
       try {
         const response = await axios.request(config);
-        const data = await response.data;
-        console.log(data);
+        const data = await response.data.results;
+          sendEmail(
+            "denismoini09@gmail.com",
+            "Recalls as reported by the FDA for the past 24 hours",
+            { data: data },
+            "./templates/fdaRecalls.handlebars"
+          );
+        
         res.status(200).json(data);
       } catch (error) {
         console.log(error.response.status);
