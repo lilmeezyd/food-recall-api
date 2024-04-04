@@ -1,11 +1,9 @@
 <html>
     <head>
         <style>
-             a {
-                text-decoration: none;
-                color: #000;
-                display: block;
-                }
+            body {
+                font-family: 'Segoe UI', 'Roboto', sans-serif;
+            }
             .recall-list {
                 padding: 15px 5px;
                 margin-bottom: 10px;
@@ -47,7 +45,7 @@
     </head>
     <body>
         {{#each data}}
-        <a href=`http://localhost:3000/recalls/fda/{{event_id}}` class="recall-list">
+        <div class="recall-list">
             <div className='recall-title'>{{reason_for_recall}}</div>
             <div className='company'><span>Company:</span>&nbsp;{{recalling_firm}}</div>
             <div className='recall-group'>
@@ -60,7 +58,8 @@
                 {{report_date}}</div>
               <div className='recall-states'><span>Distribution Area:</span>&nbsp; {{distribution_pattern}}</div>
             </div>
-        </a>
+        </div>
         {{/each}}
+        <a href="http://{{link}}">Visit Food Recall Tool</a>
     </body>
 </html>

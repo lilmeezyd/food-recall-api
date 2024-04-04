@@ -47,6 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     lastName,
     email,
     password: hashedPassword,
+    notifications: { fda: false, usda: false}
   });
 
   if (user) {
@@ -55,6 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      notifications: { fda: false, usda: false},
       token: generateToken(user._id),
     });
   } else {
@@ -156,6 +158,7 @@ const loginUser = asyncHandler(async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      notifications: { fda: false, usda: false},
       token: generateToken(user._id),
     });
   } else {
