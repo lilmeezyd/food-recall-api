@@ -147,6 +147,11 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
+  if(!user && !password) {
+    res.status(400).json({msg: "Enter all fields!"})
+    throw new Error("Enter all fields!")
+  }
+
   if(!user) {
     res.status(400).json({msg: "User not registered!"})
     throw new Error("User not registered!")

@@ -12,21 +12,14 @@ const getUsdaRecall = asyncHandler(async(req, res) => {
         url: 'https://www.fsis.usda.gov/fsis/api/recall/v/1',
         headers: { }
     }
-
-    axios.request(config)
-    .then(res => {
-        console.log(res)
-    }).then(err => console.log(err))
-/*
-    try {
-        console.log('taxi money') 
+    try { 
         const response = await axios.request(config)
         const data = await response.data
         //console.log(data)
         res.status(200).json(data)
     } catch (error) {
         console.log(error)
-    } */
+    } 
 })
 
 
