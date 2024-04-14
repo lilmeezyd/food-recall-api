@@ -268,7 +268,10 @@ const updateDetails = asyncHandler( async(req, res) => {
       { _id: req.user._id },
       { $set: { lastName } },
       { new: true }
-  );}
+  ); 
+}
+
+res.status(200).json({msg: 'User details updated!'})
 
 })
 
